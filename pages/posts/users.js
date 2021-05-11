@@ -1,0 +1,40 @@
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+function FetchUsers(props) {
+	const [states, setState] = useState({ loading: true })
+
+	useEffect(() => {
+		setState({ ...states, loading: false })
+	}, [])
+
+	return (
+		<>
+			{states.loading && <h1>Loading...</h1>}
+			<h1>{props.title}</h1>
+			<ul>
+				<li>
+					<Link href='/'>
+						<a style={{ color: 'blue', fontWeight: 'bold', fontSize: 20 }}>Back To Home</a>
+					</Link>
+				</li>
+			</ul>
+			<ul>
+				{!states.loading &&
+					props.users.map((val) => (
+						<li key={val.id}>
+							{val.id}. {val.username} - {val.email}
+						</li>
+					))}
+			</ul>
+		</>
+	)
+}
+
+export async function getStaticProps(context) {
+	const res = await fetch('http://localhost:3000/api/users')
+	const result = await res.json()
+	return { props: { title: 'Fetch Data From API', users: result.users } }
+}
+
+export default FetchUsers
