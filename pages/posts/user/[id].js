@@ -3,7 +3,7 @@ import Link from 'next/link'
 export async function getServerSideProps(context) {
 	const response = await fetch('http://localhost:3000/api/user/' + context.params.id)
 	const result = await response.json()
-	return { props: { title: 'Profile Details', user: result.users } }
+	return { props: { title: 'Profile Detail', user: result.users } }
 }
 
 export default function FetchByid(props) {
